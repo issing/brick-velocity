@@ -1,0 +1,4 @@
+#set($myConf = {"data" : {"1" : "first", "2" : "second"}})
+#xWidget("ui.MenuBar" $myConf)
+    <span>Greeting</span>
+#end

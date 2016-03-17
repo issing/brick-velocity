@@ -1,0 +1,8 @@
+#xWidget("ui.Panel", "title=test", "layout.class=BorderLayout")
+    #*#xWidget("ui.TabPanel", "layout.name=west")
+        #xWidget("ui.Panel", "title=首页", "layout.class=VerticalLayout")
+            <span>Front page</span>
+        #end
+    #end*#
+    <span>Greeting</span>
+#end

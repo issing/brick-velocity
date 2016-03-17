@@ -1,0 +1,10 @@
+#set($step = -1)
+#set($count = $data.size())
+<ul class="ig-menubar">
+    #foreach($item in $data)
+    #set($step = $step + 1)
+    <li class="ig-menu">
+        $screen
+    </li>
+    #end
+</ul>

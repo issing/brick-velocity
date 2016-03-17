@@ -1,0 +1,8 @@
+<div class="ig-panel">
+    <div class="ig-pole">
+        <h2 class="ig-title">$title</h2>
+    </div>
+    <div class="ig-screen">
+        $screen
+    </div>
+</div>
