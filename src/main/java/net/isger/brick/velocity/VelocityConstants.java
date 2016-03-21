@@ -8,7 +8,7 @@ package net.isger.brick.velocity;
  */
 public interface VelocityConstants {
 
-    public static final String KEY_ENGINE = "brick.engine";
+    public static final String KEY_ENGINE = "brick.velocity.engine";
 
     public static final String KEY_ENCODING = "brick.encoding";
 

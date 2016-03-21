@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.isger.brick.velocity.directive.widget.WidgetDirective;
+import net.isger.brick.velocity.directive.widget.WidgetsDirective;
 
 /**
  * 默认指令库
@@ -17,7 +18,8 @@ public class DefaultDirectiveLibrary implements DirectiveLibrary {
     private static final Class<?>[] DEF_LIB;
 
     static {
-        DEF_LIB = new Class<?>[] { WidgetDirective.class };
+        DEF_LIB = new Class<?>[] { WidgetDirective.class,
+                WidgetsDirective.class };
     }
 
     public List<Class<?>> getDirectiveClasses() {

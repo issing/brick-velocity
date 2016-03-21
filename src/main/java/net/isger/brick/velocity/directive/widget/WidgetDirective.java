@@ -12,11 +12,9 @@ import net.isger.brick.velocity.directive.AbstractDirective;
 import org.apache.velocity.Template;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.InternalContextAdapter;
-import org.apache.velocity.context.InternalContextAdapterImpl;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
-import org.apache.velocity.runtime.parser.node.ASTBlock;
 import org.apache.velocity.runtime.parser.node.Node;
 
 /**
@@ -25,7 +23,9 @@ import org.apache.velocity.runtime.parser.node.Node;
  * @author issing
  * 
  */
-public final class WidgetDirective extends AbstractDirective {
+public class WidgetDirective extends AbstractDirective {
+
+    public static final String SCREEN = "screen";
 
     private Map<Node, VelocityContext> contexts;
 
@@ -34,55 +34,76 @@ public final class WidgetDirective extends AbstractDirective {
     }
 
     public int getType() {
-        return BLOCK;
+        return LINE;
     }
 
     /**
      * 渲染指令
      * 
      */
-    public boolean render(InternalContextAdapter context, Writer writer,
+    public final boolean render(InternalContextAdapter context, Writer writer,
             Node node) throws IOException, ResourceNotFoundException,
             ParseErrorException, MethodInvocationException {
-        WidgetNode widgetNode = makeWidgetNode(node, context);
-        if (widgetNode != null) {
-            String widgetName = widgetNode.getName();
-            // 生成组件内容
-            VelocityContext widgetContext = getContext(node, context);
-            widgetContext.put(
-                    "screen",
-                    new WidgetScreen(this, (ASTBlock) node.jjtGetChild(node
-                            .jjtGetNumChildren() - 1), writer,
-                            new InternalContextAdapterImpl(widgetContext)));
-            VelocityEngine engine = getEngine(context);
-            Template template = engine.getTemplate(
-                    getProperty(engine, VelocityConstants.KEY_WIDGET_PATH,
-                            VelocityConstants.WIDGET_PATH)
-                            + "/"
-                            + getProperty(engine,
-                                    VelocityConstants.KEY_THEME_NAME,
-                                    VelocityConstants.THEME_NAME)
-                            + "/"
-                            + widgetName.replaceFirst("(ui.)", "") + ".vm",
-                    getProperty(engine, VelocityConstants.KEY_ENCODING,
-                            VelocityConstants.ENCODING));
-            template.merge(widgetContext, writer);
+        /* 生成组件内容 */
+        Template template = getWidgetTemplate(getEngine(context),
+                getWidgetName(node, context)); // 获取组件模板
+        try {
+            template.merge(getWidgetContext(node, context), writer); // 输出组件内容
             writer.flush();
+        } finally {
             contexts.remove(node);
         }
         return true;
     }
 
-    private WidgetNode makeWidgetNode(Node node, InternalContextAdapter context) {
-        WidgetNode widgetNode = null;
-        String widgetName = WidgetNode.getName(node, context);
-        if (widgetName != null) {
-            widgetNode = new WidgetNode(widgetName, node, context);
+    /**
+     * 获取节点名
+     * 
+     * @param node
+     * @param context
+     * @return
+     */
+    public final String getWidgetName(Node node, InternalContextAdapter context) {
+        if (getPropertyCount(node) >= 1) {
+            Object firstChild = node.jjtGetChild(0).value(context);
+            if (firstChild instanceof String) {
+                return (String) firstChild;
+            }
         }
-        return widgetNode;
+        throw new ParseErrorException("(X) The " + this.getName()
+                + " directive's component name must be configured"
+                + " [eg: #widget(\"ui.Newline\")]");
     }
 
-    public VelocityContext getContext(Node node, InternalContextAdapter context) {
+    /**
+     * 获取模板
+     * 
+     * @param engine
+     * @param widgetName
+     * @return
+     */
+    public Template getWidgetTemplate(VelocityEngine engine, String widgetName) {
+        return engine.getTemplate(
+                getProperty(engine, VelocityConstants.KEY_WIDGET_PATH,
+                        VelocityConstants.WIDGET_PATH)
+                        + "/"
+                        + getProperty(engine, VelocityConstants.KEY_THEME_NAME,
+                                VelocityConstants.THEME_NAME)
+                        + "/"
+                        + widgetName.replaceFirst("(ui.)", "") + ".vm",
+                getProperty(engine, VelocityConstants.KEY_ENCODING,
+                        VelocityConstants.ENCODING));
+    }
+
+    /**
+     * 获取上下文
+     * 
+     * @param node
+     * @param context
+     * @return
+     */
+    public VelocityContext getWidgetContext(Node node,
+            InternalContextAdapter context) {
         VelocityContext widgetContext = contexts.get(node);
         if (widgetContext == null) {
             widgetContext = new VelocityContext(getEngine(context),

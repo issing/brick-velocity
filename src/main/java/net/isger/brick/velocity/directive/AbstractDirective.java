@@ -5,6 +5,8 @@ import java.util.Map;
 
 import net.isger.brick.velocity.VelocityContext;
 import net.isger.brick.velocity.VelocityConstants;
+import net.isger.util.Helpers;
+import net.isger.util.Strings;
 
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
@@ -22,18 +24,13 @@ import org.apache.velocity.runtime.parser.node.Node;
  */
 public abstract class AbstractDirective extends Directive {
 
-    /** 指令前缀 */
-    private static final String DIRECTIVE_PREFIX = "x";
-
     /** 指令名称 */
     private String name;
 
     public String getName() {
         synchronized (this) {
-            if (this.name == null || !this.name.equals("Directive")) {
-                this.name = DIRECTIVE_PREFIX
-                        + this.getClass().getSimpleName()
-                                .replaceFirst("Directive$", "");
+            if (Strings.isEmpty(this.name)) {
+                this.name = Helpers.getAliasName(this.getClass(), "Directive$");
             }
         }
         return this.name;
@@ -47,13 +44,27 @@ public abstract class AbstractDirective extends Directive {
      */
     protected VelocityEngine getEngine(InternalContextAdapter context) {
         VelocityEngine engine;
-        Context ic = context.getInternalUserContext();
-        if (ic instanceof VelocityContext) {
-            engine = ((VelocityContext) ic).getEngine();
+        Context internalContext = context.getInternalUserContext();
+        if (internalContext instanceof VelocityContext) {
+            engine = ((VelocityContext) internalContext).getEngine();
         } else {
             engine = (VelocityEngine) context.get(VelocityConstants.KEY_ENGINE);
         }
         return engine;
+    }
+
+    /**
+     * 获取属性总数
+     * 
+     * @param node
+     * @return
+     */
+    protected int getPropertyCount(Node node) {
+        int count = node.jjtGetNumChildren();
+        if (getType() == BLOCK) {
+            count--;
+        }
+        return count;
     }
 
     /**
@@ -70,20 +81,16 @@ public abstract class AbstractDirective extends Directive {
             InternalContextAdapter context, Node node)
             throws ParseErrorException, MethodInvocationException {
         Map<String, Object> propertyMap;
-        int childCount = node.jjtGetNumChildren();
-        if (getType() == BLOCK) {
-            childCount--;
-        }
+        int propCount = getPropertyCount(node);
         Node firstChild = null;
         Object firstValue = null;
-        if (childCount == 2 && null != (firstChild = node.jjtGetChild(1))
-                && null != (firstValue = firstChild.value(context))
-                && firstValue instanceof Map) {
+        if (propCount == 2 && null != (firstChild = node.jjtGetChild(1))
+                && (firstValue = firstChild.value(context)) instanceof Map) {
             propertyMap = (Map<String, Object>) firstValue;
         } else {
             propertyMap = new HashMap<String, Object>();
-            for (int index = 1; index < childCount; index++) {
-                this.addProperty(propertyMap, context, node.jjtGetChild(index));
+            for (int index = 1; index < propCount; index++) {
+                setProperty(propertyMap, context, node.jjtGetChild(index));
             }
         }
         return propertyMap;
@@ -98,19 +105,20 @@ public abstract class AbstractDirective extends Directive {
      * @throws ParseErrorException
      * @throws MethodInvocationException
      */
-    protected void addProperty(Map<String, Object> propertyMap,
+    protected void setProperty(Map<String, Object> propertyMap,
             InternalContextAdapter context, Node node)
             throws ParseErrorException, MethodInvocationException {
         String param = node.value(context).toString();
         int idx = param.indexOf("=");
         if (idx == -1) {
-            throw new ParseErrorException(
-                    "#"
-                            + this.getName()
-                            + " arguments must include an assignment operator [eg: #xWidget(\"ui.Panel\", \"title=Brick\" )]");
+            throw new ParseErrorException("(X) The " + this.getName()
+                    + " directive arguments must include"
+                    + " an assignment operator"
+                    + " [eg: #widget(\"ui.Panel\", \"title=Brick\","
+                    + " \"key=value\")] or"
+                    + " [eg: #widget(\"ui.Panel\", { \"title\" : \"Brick\","
+                    + " \"key\" : \"value\" } )]");
         }
-        String key = param.substring(0, idx);
-        String value = param.substring(idx + 1);
-        propertyMap.put(key, value);
+        propertyMap.put(param.substring(0, idx), param.substring(idx + 1));
     }
 }

@@ -12,6 +12,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import net.isger.brick.velocity.VelocityContext;
 import net.isger.brick.velocity.directive.widget.WidgetDirective;
+import net.isger.brick.velocity.directive.widget.WidgetsDirective;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.app.VelocityEngine;
@@ -30,7 +31,8 @@ public class BrickVelocityTest extends TestCase {
         Map<String, Object> context = new HashMap<String, Object>();
         VelocityEngine engine = new VelocityEngine();
         Properties props = new Properties();
-        props.setProperty("userdirective", WidgetDirective.class.getName());
+        props.setProperty("userdirective", WidgetDirective.class.getName()
+                + ", " + WidgetsDirective.class.getName());
         props.setProperty("brick.widget.path", "/template/isweb");
         engine.init(props);
         VelocityContext widgetContext = new VelocityContext(engine, context,
