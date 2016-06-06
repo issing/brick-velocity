@@ -1,10 +1,10 @@
-package net.isger.brick.velocity.directive;
+package net.isger.velocity.directive;
 
 import java.util.Arrays;
 import java.util.List;
 
-import net.isger.brick.velocity.directive.widget.WidgetDirective;
-import net.isger.brick.velocity.directive.widget.WidgetsDirective;
+import net.isger.velocity.directive.widget.WidgetDirective;
+import net.isger.velocity.directive.widget.WidgetsDirective;
 
 /**
  * 默认指令库

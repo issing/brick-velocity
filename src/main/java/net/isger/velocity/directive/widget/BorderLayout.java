@@ -1,10 +1,10 @@
-package net.isger.brick.velocity.directive.widget;
+package net.isger.velocity.directive.widget;
 
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.isger.brick.velocity.VelocityContext;
+import net.isger.velocity.VelocityContext;
 
 import org.apache.velocity.runtime.parser.node.Node;
 

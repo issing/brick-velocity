@@ -1,10 +1,10 @@
-package net.isger.brick.velocity.directive.widget;
+package net.isger.velocity.directive.widget;
 
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 
-import net.isger.brick.velocity.VelocityContext;
+import net.isger.velocity.VelocityContext;
 
 import org.apache.velocity.context.InternalContextAdapter;
 import org.apache.velocity.exception.MethodInvocationException;
@@ -58,7 +58,7 @@ public class WidgetScreen {
     }
 
     public VelocityContext getWidgetContext(Node node) {
-        return directive.getWidgetContext(node, context);
+        return directive.getWidgetContext(context, node);
     }
 
     public void render(Writer writer) throws IOException,

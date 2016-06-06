@@ -1,12 +1,12 @@
-package net.isger.brick.velocity.directive;
+package net.isger.velocity.directive;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import net.isger.brick.velocity.VelocityContext;
-import net.isger.brick.velocity.VelocityConstants;
 import net.isger.util.Helpers;
 import net.isger.util.Strings;
+import net.isger.velocity.VelocityConstants;
+import net.isger.velocity.VelocityContext;
 
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
@@ -121,4 +121,21 @@ public abstract class AbstractDirective extends Directive {
         }
         propertyMap.put(param.substring(0, idx), param.substring(idx + 1));
     }
+
+    /**
+     * 获取配置属性
+     * 
+     * @param engine
+     * @param key
+     * @param def
+     * @return
+     */
+    protected String getProperty(VelocityEngine engine, String key, String def) {
+        String val = (String) engine.getProperty(key);
+        if (val == null) {
+            val = def;
+        }
+        return val;
+    }
+
 }

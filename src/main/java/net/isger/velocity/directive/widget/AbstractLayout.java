@@ -1,4 +1,4 @@
-package net.isger.brick.velocity.directive.widget;
+package net.isger.velocity.directive.widget;
 
 import org.apache.velocity.runtime.parser.node.ASTDirective;
 import org.apache.velocity.runtime.parser.node.Node;

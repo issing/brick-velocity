@@ -1,4 +1,4 @@
-package net.isger.brick.velocity.directive;
+package net.isger.velocity.directive;
 
 import java.util.List;
 

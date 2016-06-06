@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+  <entry key="insert"><![CDATA[
+    insert into t_employ(id, name) values(#seize($value.id), #seize($value.name))
+  ]]></entry>
+</properties>

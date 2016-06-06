@@ -1,4 +1,4 @@
-package net.isger.brick.velocity.bean;
+package net.isger.velocity.bean;
 
 /**
  * 布局

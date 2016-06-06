@@ -1,4 +1,4 @@
-package net.isger.brick.velocity;
+package net.isger.velocity;
 
 /**
  * 模板常量

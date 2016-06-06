@@ -1,9 +1,9 @@
-package net.isger.brick.velocity;
+package net.isger.velocity;
 
-import net.isger.brick.velocity.bean.LayoutBean;
-import net.isger.brick.velocity.bean.ThemeBean;
-import net.isger.brick.velocity.bean.WidgetBean;
 import net.isger.util.Reflects;
+import net.isger.velocity.bean.LayoutBean;
+import net.isger.velocity.bean.ThemeBean;
+import net.isger.velocity.bean.WidgetBean;
 
 /**
  * 模板上下文策略
