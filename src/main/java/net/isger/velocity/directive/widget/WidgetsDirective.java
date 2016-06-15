@@ -18,8 +18,8 @@ public class WidgetsDirective extends WidgetDirective {
         return BLOCK;
     }
 
-    public VelocityContext getWidgetContext(Node node,
-            InternalContextAdapter context) {
+    public VelocityContext getWidgetContext(InternalContextAdapter context,
+            Node node) {
         VelocityContext widgetContext = super.getWidgetContext(context, node);
         /* 添加内容节点 */
         Node screenNode = node.jjtGetChild(getPropertyCount(node));

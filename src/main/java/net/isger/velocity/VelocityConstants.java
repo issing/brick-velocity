@@ -24,7 +24,7 @@ public interface VelocityConstants {
 
     public static final String KEY_LAYOUT_SUPPORT = "brick.layout.support";
 
-    public static final String LAYOUT_SUPPORT = "false";
+    public static final String LAYOUT_SUPPORT = "true";
 
     public static final String KEY_LAYOUT_PATH = "brick.layout.path";
 
@@ -32,7 +32,7 @@ public interface VelocityConstants {
 
     public static final String KEY_LAYOUT_NAME = "brick.layout.name";
 
-    public static final String LAYOUT_NAME = "default.vm";
+    public static final String LAYOUT_NAME = "default";
 
     public static final String KEY_WIDGET_PATH = "brick.widget.path";
 

@@ -51,6 +51,7 @@ public class BrickVelocityTest extends TestCase {
             writer.flush();
         } catch (IOException e) {
         }
+        System.out.println("# SQL ************************");
         widgetContext.put("value", new Employ("1", "first"));
         engine.evaluate(widgetContext, writer, Employ.class.getName()
                 + ".insert", Sqls.getSQL(Employ.class, "insert"));

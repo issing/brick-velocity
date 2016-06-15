@@ -36,8 +36,15 @@ public class VelocityContext extends org.apache.velocity.VelocityContext {
             Context innerContext) {
         super(context, innerContext);
         this.engine = engine;
-        this.secretary = new ContextSecretary();
-        this.name = Helpers.getAliasName(this.getClass(), "Context$", "Brick");
+        if (innerContext instanceof VelocityContext) {
+            VelocityContext velocityContext = (VelocityContext) innerContext;
+            this.secretary = velocityContext.secretary;
+            this.name = velocityContext.name;
+        } else {
+            this.secretary = new ContextSecretary();
+            this.name = Helpers.getAliasName(this.getClass(), "Context$",
+                    "Brick");
+        }
         this.put(getName(), getSecretary());
     }
 

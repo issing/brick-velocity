@@ -107,7 +107,8 @@ public class WidgetDirective extends AbstractDirective {
         VelocityContext widgetContext = contexts.get(node);
         if (widgetContext == null) {
             widgetContext = new VelocityContext(getEngine(context),
-                    createPropertyMap(context, node), context);
+                    createPropertyMap(context, node),
+                    context.getInternalUserContext());
             contexts.put(node, widgetContext);
         }
         return widgetContext;
