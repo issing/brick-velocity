@@ -34,6 +34,10 @@ public interface VelocityConstants {
 
     public static final String LAYOUT_NAME = "default";
 
+    public static final String KEY_LAYOUT_CARRY = "brick.layout.carry";
+
+    public static final String LAYOUT_CARRY = "true";
+
     public static final String KEY_WIDGET_PATH = "brick.widget.path";
 
     public static final String WIDGET_PATH = "/widget";

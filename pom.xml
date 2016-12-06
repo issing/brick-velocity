@@ -23,7 +23,7 @@
   <dependencies>
     <!-- 支撑依赖 -->
     <dependency>
-      <groupId>org.apache.velocity</groupId>
+      <groupId>net.isger</groupId>
       <artifactId>velocity</artifactId>
       <version>1.7</version>
     </dependency>
@@ -31,6 +31,12 @@
       <groupId>org.apache.velocity</groupId>
       <artifactId>velocity-tools</artifactId>
       <version>2.0</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.velocity</groupId>
+          <artifactId>velocity</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <!-- 砖头依赖 -->
     <dependency>

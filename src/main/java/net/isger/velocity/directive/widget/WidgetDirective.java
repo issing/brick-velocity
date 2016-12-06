@@ -27,6 +27,8 @@ public class WidgetDirective extends AbstractDirective {
 
     public static final String SCREEN = "screen";
 
+    public static final String UI = "ui";
+
     private Map<Node, VelocityContext> contexts;
 
     public WidgetDirective() {
@@ -90,7 +92,8 @@ public class WidgetDirective extends AbstractDirective {
                         + getProperty(engine, VelocityConstants.KEY_THEME_NAME,
                                 VelocityConstants.THEME_NAME)
                         + "/"
-                        + widgetName.replaceFirst("(ui[.])+", "") + ".vm",
+                        + widgetName.replaceFirst("(ui[.])+", "").replaceAll(
+                                "[.]", "/") + ".vm",
                 getProperty(engine, VelocityConstants.KEY_ENCODING,
                         VelocityConstants.ENCODING));
     }
@@ -112,6 +115,14 @@ public class WidgetDirective extends AbstractDirective {
             contexts.put(node, widgetContext);
         }
         return widgetContext;
+    }
+
+    protected Map<String, Object> createPropertyMap(
+            InternalContextAdapter context, Node node) {
+        Map<String, Object> propertyMap = new HashMap<String, Object>();
+        propertyMap.put(SCREEN, "");
+        propertyMap.put(UI, super.createPropertyMap(context, node));
+        return propertyMap;
     }
 
 }

@@ -10,11 +10,13 @@ public class LayoutBean {
 
     private boolean support;
 
+    private String path;
+
     private String name;
 
-    private String screen;
+    private boolean carry;
 
-    private String path;
+    private String screen;
 
     public boolean isSupport() {
         return support;
@@ -22,6 +24,14 @@ public class LayoutBean {
 
     public void setSupport(boolean support) {
         this.support = support;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public String getName() {
@@ -32,20 +42,20 @@ public class LayoutBean {
         this.name = name;
     }
 
+    public boolean isCarry() {
+        return carry;
+    }
+
+    public void setCarry(boolean carry) {
+        this.carry = carry;
+    }
+
     public String getScreen() {
         return screen;
     }
 
     public void setScreen(String screen) {
         this.screen = screen;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
     }
 
 }
