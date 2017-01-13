@@ -6,6 +6,7 @@ import java.util.Properties;
 
 import net.isger.util.Strings;
 import net.isger.util.anno.Ignore;
+import net.isger.util.sql.PageSql;
 import net.isger.util.sql.SqlEntry;
 import net.isger.util.sql.SqlTransformerAdapter;
 import net.isger.velocity.VelocityConstants;
@@ -81,7 +82,12 @@ public class VelocityTransformer extends SqlTransformerAdapter implements
     }
 
     public SqlEntry transform(SqlEntry entry) {
-        return transform(entry.getSql(), entry.getValues());
+        if (!(entry instanceof PageSql)) {
+            return transform(entry.getSql(), entry.getValues());
+        }
+        PageSql page = (PageSql) entry;
+        page.wrap(transform(page.getOriginSql(), page.getOriginValues()));
+        return page;
     }
 
     public SqlEntry transform(String sql, Object value) {
