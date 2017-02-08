@@ -36,6 +36,10 @@ public class SeizeDirective extends AbstractDirective {
             Node node) throws IOException, ResourceNotFoundException,
             ParseErrorException, MethodInvocationException {
         List<Object> seizes = getSeizes(context);
+        if (seizes == null) {
+            seizes = new ArrayList<Object>();
+            context.put(KEY_SEIZES, seizes);
+        }
         Object seize = getSeize(context, node);
         writer.write("?");
         seize: {
@@ -75,12 +79,11 @@ public class SeizeDirective extends AbstractDirective {
 
     @SuppressWarnings("unchecked")
     public static List<Object> getSeizes(Context context) {
-        List<Object> values = (List<Object>) context.get(KEY_SEIZES);
-        if (values == null) {
-            values = new ArrayList<Object>();
-            context.put(KEY_SEIZES, values);
+        List<Object> seizes = (List<Object>) context.get(KEY_SEIZES);
+        if (seizes == null) {
+            seizes = new ArrayList<Object>();
+            context.put(KEY_SEIZES, seizes);
         }
-        return values;
+        return seizes;
     }
-
 }

@@ -95,9 +95,8 @@ public class VelocityTransformer extends SqlTransformerAdapter implements
         widgetContext.put(SQL_VALUE, value);
         StringWriter writer = new StringWriter(sql.length());
         engine.evaluate(widgetContext, writer, VELOCITY_TRANSFORMER, sql);
-        List<?> seizes = SeizeDirective.getSeizes(widgetContext);
-        return super.transform(writer.getBuffer().toString(),
-                seizes.size() > 0 ? seizes.toArray() : value);
+        return super.transform(writer.getBuffer().toString(), SeizeDirective
+                .getSeizes(widgetContext).toArray());
     }
 
     public void destroy() {
