@@ -36,10 +36,6 @@ public class SeizeDirective extends AbstractDirective {
             Node node) throws IOException, ResourceNotFoundException,
             ParseErrorException, MethodInvocationException {
         List<Object> seizes = getSeizes(context);
-        if (seizes == null) {
-            seizes = new ArrayList<Object>();
-            context.put(KEY_SEIZES, seizes);
-        }
         Object seize = getSeize(context, node);
         writer.write("?");
         seize: {
