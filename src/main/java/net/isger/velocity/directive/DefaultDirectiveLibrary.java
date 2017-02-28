@@ -3,6 +3,7 @@ package net.isger.velocity.directive;
 import java.util.Arrays;
 import java.util.List;
 
+import net.isger.velocity.directive.render.RenderDirective;
 import net.isger.velocity.directive.widget.WidgetDirective;
 import net.isger.velocity.directive.widget.WidgetsDirective;
 
@@ -19,7 +20,7 @@ public class DefaultDirectiveLibrary implements DirectiveLibrary {
 
     static {
         DEF_LIB = new Class<?>[] { WidgetDirective.class,
-                WidgetsDirective.class };
+                WidgetsDirective.class, RenderDirective.class };
     }
 
     public List<Class<?>> getDirectiveClasses() {
