@@ -6,7 +6,7 @@ public class ThemeBean {
 
     private String name;
 
-    private String location;
+    private String action;
 
     public String getPath() {
         return path;
@@ -24,16 +24,20 @@ public class ThemeBean {
         this.name = name;
     }
 
-    public String getLocation() {
-        return location;
+    public String getAction() {
+        return action;
     }
 
-    public void setLocation(String location) {
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public String getLocation() {
         StringBuffer buffer = new StringBuffer(128);
         buffer.append(path);
         buffer.append("/").append(name);
-        buffer.append("/").append(location);
-        this.location = buffer.toString();
+        buffer.append("/").append(action);
+        return buffer.toString();
     }
 
 }
