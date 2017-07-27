@@ -1,10 +1,14 @@
 package net.isger.velocity.bean;
 
+import net.isger.util.Strings;
+
 public class ThemeBean {
 
     private String path;
 
     private String name;
+
+    private String namespace;
 
     private String action;
 
@@ -24,6 +28,14 @@ public class ThemeBean {
         this.name = name;
     }
 
+    public String getNamespace() {
+        return namespace;
+    }
+
+    public void setNamespace(String namespace) {
+        this.namespace = namespace;
+    }
+
     public String getAction() {
         return action;
     }
@@ -36,6 +48,9 @@ public class ThemeBean {
         StringBuffer buffer = new StringBuffer(128);
         buffer.append(path);
         buffer.append("/").append(name);
+        if (Strings.isNotEmpty(namespace)) {
+            buffer.append("/").append(namespace);
+        }
         buffer.append("/").append(action);
         return buffer.toString();
     }
