@@ -3,3 +3,10 @@
 <span>$item</span>
 #end
 #widget("ui.Wrapper")
+#foreach($text in $test.split("\|"))
+  $text<br />
+#end
+
+#foreach($i in [1..1])
+  $i<br />
+#end

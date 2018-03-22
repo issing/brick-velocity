@@ -7,20 +7,19 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.velocity.Template;
+import org.apache.velocity.app.VelocityEngine;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import net.isger.util.Sqls;
 import net.isger.util.sql.SqlEntry;
-import net.isger.velocity.VelocityContext;
 import net.isger.velocity.bean.Employ;
 import net.isger.velocity.directive.widget.WidgetDirective;
 import net.isger.velocity.directive.widget.WidgetsDirective;
 import net.isger.velocity.sql.SeizeDirective;
 import net.isger.velocity.sql.VelocityTransformer;
-
-import org.apache.velocity.Template;
-import org.apache.velocity.app.VelocityEngine;
 
 public class BrickVelocityTest extends TestCase {
 
@@ -34,6 +33,7 @@ public class BrickVelocityTest extends TestCase {
 
     public void testVelocity() {
         Map<String, Object> context = new HashMap<String, Object>();
+        context.put("test", "a|bcd");
         VelocityEngine engine = new VelocityEngine();
         Properties props = new Properties();
         props.setProperty("userdirective", WidgetDirective.class.getName()
