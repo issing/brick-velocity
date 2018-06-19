@@ -36,25 +36,32 @@ public class BrickVelocityTest extends TestCase {
         context.put("test", "a|bcd");
         VelocityEngine engine = new VelocityEngine();
         Properties props = new Properties();
-        props.setProperty("userdirective", WidgetDirective.class.getName()
-                + ", " + WidgetsDirective.class.getName() + ", "
-                + SeizeDirective.class.getName());
+        props.setProperty("userdirective",
+                WidgetDirective.class.getName() + ", "
+                        + WidgetsDirective.class.getName() + ", "
+                        + SeizeDirective.class.getName());
         props.setProperty("brick.widget.path", "/template/isweb");
         engine.init(props);
         VelocityContext widgetContext = new VelocityContext(engine, context,
                 null);
         Template template = engine.getTemplate("/template/isweb.vm", "UTF-8");
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
-                System.out));
-        template.merge(widgetContext, writer);
+        BufferedWriter writer = new BufferedWriter(
+                new OutputStreamWriter(System.out));
+        try {
+            template.merge(widgetContext, writer);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            throw e;
+        }
         try {
             writer.flush();
         } catch (IOException e) {
         }
         System.out.println("# SQL ************************");
         widgetContext.put("value", new Employ("1", "first"));
-        engine.evaluate(widgetContext, writer, Employ.class.getName()
-                + ".insert", Sqls.getSQL(Employ.class, "insert"));
+        engine.evaluate(widgetContext, writer,
+                Employ.class.getName() + ".insert",
+                Sqls.getSQL(Employ.class, "insert"));
         try {
             writer.flush();
         } catch (IOException e) {
