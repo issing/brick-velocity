@@ -2,10 +2,10 @@ package net.isger.velocity;
 
 import java.util.Map;
 
-import net.isger.util.Helpers;
-
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
+
+import net.isger.util.Helpers;
 
 /**
  * 模板上下文
@@ -73,6 +73,10 @@ public class VelocityContext extends org.apache.velocity.VelocityContext {
      */
     public ContextSecretary getSecretary() {
         return secretary;
+    }
+
+    public void put(Class<?> clazz) {
+        this.put(clazz.getSimpleName(), clazz);
     }
 
     /**
