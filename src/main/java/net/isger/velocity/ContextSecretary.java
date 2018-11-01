@@ -1,5 +1,6 @@
 package net.isger.velocity;
 
+import net.isger.util.Helpers;
 import net.isger.util.Reflects;
 import net.isger.velocity.bean.LayoutBean;
 import net.isger.velocity.bean.ThemeBean;
@@ -70,10 +71,11 @@ public class ContextSecretary {
      * @return
      */
     public static Object mirror(String name, boolean isCreate) {
-        Class<?> type = Reflects.getClass(name);
-        if (type == null) {
-            type = Reflects.getClass("java.lang." + name);
-        }
+        @SuppressWarnings("unchecked")
+        Class<?> type = Helpers.coalesce(Reflects.getClass(name),
+                Reflects.getClass("java.lang." + name),
+                Reflects.getClass("java.util." + name),
+                Reflects.getClass("net.isger.util." + name));
         return isCreate ? Reflects.newInstance(type) : type;
     }
 }
