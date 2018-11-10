@@ -22,9 +22,13 @@ public interface VelocityConstants {
 
     public static final String VELOCITY_SUFFIX = ".vm";
 
+    public static final String KEY_MOBILE_SUPPORT = "brick.mobile.support";
+
     public static final String KEY_LAYOUT_SUPPORT = "brick.layout.support";
 
-    public static final String LAYOUT_SUPPORT = "true";
+    public static final String SUPPORT = "true";
+
+    public static final String NONSUPPORT = "false";
 
     public static final String KEY_LAYOUT_PATH = "brick.layout.path";
 
