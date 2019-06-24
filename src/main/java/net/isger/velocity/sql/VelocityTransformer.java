@@ -1,9 +1,13 @@
 package net.isger.velocity.sql;
 
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.velocity.app.VelocityEngine;
+
+import net.isger.util.Asserts;
 import net.isger.util.Strings;
 import net.isger.util.anno.Ignore;
 import net.isger.util.sql.PageSql;
@@ -12,56 +16,54 @@ import net.isger.util.sql.SqlTransformerAdapter;
 import net.isger.velocity.VelocityConstants;
 import net.isger.velocity.VelocityContext;
 import net.isger.velocity.directive.BaseDirectiveLibrary;
-
-import org.apache.velocity.app.VelocityEngine;
+import net.isger.velocity.directive.DirectiveLibrary;
 
 @Ignore
-public class VelocityTransformer extends SqlTransformerAdapter implements
-        VelocityConstants {
+public class VelocityTransformer extends SqlTransformerAdapter implements VelocityConstants {
 
-    public static final String SQL_VALUE = "value";
-
-    public static final String VELOCITY_TRANSFORMER = "brick.velocity.sql.transformer";
+    private static final String TAG = "brick.velocity.sql.transformer";
 
     private static final String KEY_DIRECTIVE = "userdirective";
 
+    private static final String KEY_VALUE = "value";
+
     private VelocityEngine engine;
 
-    private BaseDirectiveLibrary library;
+    private DirectiveLibrary library;
 
     public void initial() {
         engine = new VelocityEngine();
         if (library == null) {
-            library = new BaseDirectiveLibrary();
+            library = createDirectiveLibrary();
         }
         Properties properties = loadConfiguration();
         try {
             engine.init(properties);
         } catch (Exception e) {
-            throw new IllegalStateException(
-                    "(X) Unable to instantiate VelocityEngine", e);
+            throw Asserts.state("Unable to instantiate VelocityEngine", e);
         }
+    }
+
+    protected DirectiveLibrary createDirectiveLibrary() {
+        return new BaseDirectiveLibrary();
     }
 
     protected Properties loadConfiguration() {
         Properties props = new Properties();
-        // 添加默认指令
-        library.addDirectiveClasses(SeizeDirective.class);
-        // 自定义砖头指令集
-        StringBuffer buffer = new StringBuffer(512);
-        List<Class<?>> directives = library.getDirectiveClasses();
-        if (directives != null) {
-            for (Class<?> d : directives) {
-                append(buffer, d.getName());
+        // 自定义指令集
+        if (library != null) {
+            List<Class<?>> directives = library.getDirectiveClasses();
+            if (directives == null) {
+                directives = new ArrayList<Class<?>>();
+            } else {
+                directives = new ArrayList<Class<?>>(directives);
             }
+            if (!directives.contains(SeizeDirective.class)) {
+                directives.add(SeizeDirective.class);
+            }
+            props.setProperty(KEY_DIRECTIVE, Strings.join(true, ",", library.getDirectiveClasses()));
+
         }
-        String directive = props.getProperty(KEY_DIRECTIVE);
-        if (Strings.isEmpty(directive)) {
-            buffer.setLength(buffer.length() - 2);
-        } else {
-            buffer.append(directive);
-        }
-        props.setProperty(KEY_DIRECTIVE, buffer.toString());
         // 初始默认配置
         initProperty(props, KEY_LAYOUT_PATH, LAYOUT_PATH);
         initProperty(props, KEY_LAYOUT_NAME, LAYOUT_NAME);
@@ -70,15 +72,11 @@ public class VelocityTransformer extends SqlTransformerAdapter implements
         return props;
     }
 
-    private void initProperty(Properties props, String key, String def) {
+    protected void initProperty(Properties props, String key, String def) {
         String value = props.getProperty(key);
         if (Strings.isEmpty(value)) {
             props.setProperty(key, def);
         }
-    }
-
-    private void append(StringBuffer buffer, String value) {
-        buffer.append(value).append(", ");
     }
 
     public SqlEntry transform(SqlEntry entry) {
@@ -92,11 +90,10 @@ public class VelocityTransformer extends SqlTransformerAdapter implements
 
     public SqlEntry transform(String sql, Object value) {
         VelocityContext widgetContext = new VelocityContext(engine);
-        widgetContext.put(SQL_VALUE, value);
+        widgetContext.put(KEY_VALUE, value);
         StringWriter writer = new StringWriter(sql.length());
-        engine.evaluate(widgetContext, writer, VELOCITY_TRANSFORMER, sql);
-        return super.transform(writer.getBuffer().toString(), SeizeDirective
-                .getSeizes(widgetContext).toArray());
+        engine.evaluate(widgetContext, writer, TAG, sql);
+        return super.transform(writer.getBuffer().toString(), SeizeDirective.getSeizes(widgetContext).toArray());
     }
 
     public void destroy() {

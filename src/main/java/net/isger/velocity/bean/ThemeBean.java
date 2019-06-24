@@ -51,7 +51,10 @@ public class ThemeBean {
         if (Strings.isNotEmpty(namespace)) {
             buffer.append("/").append(namespace);
         }
-        buffer.append("/").append(action);
+        if (!action.startsWith("/")) {
+            buffer.append("/");
+        }
+        buffer.append(action);
         return buffer.toString();
     }
 

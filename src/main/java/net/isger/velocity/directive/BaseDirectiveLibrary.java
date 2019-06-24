@@ -24,7 +24,7 @@ public class BaseDirectiveLibrary implements DirectiveLibrary {
      * 
      * @param directive
      */
-    public void addDirectiveClasses(Class<?> directive) {
+    public void addDirectiveClass(Class<?> directive) {
         if (Directive.class.isAssignableFrom(directive)
                 && !directives.contains(directive)) {
             directives.add(directive);
