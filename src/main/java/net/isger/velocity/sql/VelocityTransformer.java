@@ -8,6 +8,8 @@ import java.util.Properties;
 import org.apache.velocity.app.VelocityEngine;
 
 import net.isger.util.Asserts;
+import net.isger.util.Callable;
+import net.isger.util.Helpers;
 import net.isger.util.Strings;
 import net.isger.util.anno.Ignore;
 import net.isger.util.sql.PageSql;
@@ -61,8 +63,11 @@ public class VelocityTransformer extends SqlTransformerAdapter implements Veloci
             if (!directives.contains(SeizeDirective.class)) {
                 directives.add(SeizeDirective.class);
             }
-            props.setProperty(KEY_DIRECTIVE, Strings.join(true, ",", library.getDirectiveClasses()));
-
+            props.setProperty(KEY_DIRECTIVE, Strings.join(true, ",", (Object[]) Helpers.each(true, directives, new Callable<String>() {
+                public String call(Object... args) {
+                    return ((Class<?>) args[1]).getName();
+                }
+            })));
         }
         // 初始默认配置
         initProperty(props, KEY_LAYOUT_PATH, LAYOUT_PATH);

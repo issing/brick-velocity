@@ -6,14 +6,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import net.isger.velocity.directive.AbstractDirective;
-
 import org.apache.velocity.context.Context;
 import org.apache.velocity.context.InternalContextAdapter;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.parser.node.Node;
+
+import net.isger.util.Asserts;
+import net.isger.velocity.directive.AbstractDirective;
 
 /**
  * 占位指令
@@ -32,9 +33,7 @@ public class SeizeDirective extends AbstractDirective {
     /**
      * 占位渲染
      */
-    public boolean render(InternalContextAdapter context, Writer writer,
-            Node node) throws IOException, ResourceNotFoundException,
-            ParseErrorException, MethodInvocationException {
+    public boolean render(InternalContextAdapter context, Writer writer, Node node) throws IOException, ResourceNotFoundException, ParseErrorException, MethodInvocationException {
         List<Object> seizes = getSeizes(context);
         Object seize = getSeize(context, node);
         writer.write("?");
@@ -68,9 +67,7 @@ public class SeizeDirective extends AbstractDirective {
         if (getPropertyCount(node) >= 1) {
             return node.jjtGetChild(0).value(context);
         }
-        throw new ParseErrorException("(X) The " + this.getName()
-                + " directive's name must be configured"
-                + " [eg: #seize(\"name\")]");
+        throw Asserts.state("The %s directive's name must be configured [eg: #seize(\"name\")]", this.getName());
     }
 
     @SuppressWarnings("unchecked")

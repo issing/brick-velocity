@@ -3,11 +3,6 @@ package net.isger.velocity.directive;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.isger.util.Helpers;
-import net.isger.util.Strings;
-import net.isger.velocity.VelocityConstants;
-import net.isger.velocity.VelocityContext;
-
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.context.InternalContextAdapter;
@@ -15,6 +10,11 @@ import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.runtime.directive.Directive;
 import org.apache.velocity.runtime.parser.node.Node;
+
+import net.isger.util.Helpers;
+import net.isger.util.Strings;
+import net.isger.velocity.VelocityConstants;
+import net.isger.velocity.VelocityContext;
 
 /**
  * 抽象指令
@@ -77,15 +77,12 @@ public abstract class AbstractDirective extends Directive {
      * @throws MethodInvocationException
      */
     @SuppressWarnings("unchecked")
-    protected Map<String, Object> createPropertyMap(
-            InternalContextAdapter context, Node node)
-            throws ParseErrorException, MethodInvocationException {
+    protected Map<String, Object> createPropertyMap(InternalContextAdapter context, Node node) throws ParseErrorException, MethodInvocationException {
         Map<String, Object> propertyMap;
         int propCount = getPropertyCount(node);
         Node firstChild = null;
         Object firstValue = null;
-        if (propCount == 2 && null != (firstChild = node.jjtGetChild(1))
-                && (firstValue = firstChild.value(context)) instanceof Map) {
+        if (propCount == 2 && null != (firstChild = node.jjtGetChild(1)) && (firstValue = firstChild.value(context)) instanceof Map) {
             propertyMap = (Map<String, Object>) firstValue;
         } else {
             propertyMap = new HashMap<String, Object>();
@@ -105,19 +102,12 @@ public abstract class AbstractDirective extends Directive {
      * @throws ParseErrorException
      * @throws MethodInvocationException
      */
-    protected void setProperty(Map<String, Object> propertyMap,
-            InternalContextAdapter context, Node node)
-            throws ParseErrorException, MethodInvocationException {
+    protected void setProperty(Map<String, Object> propertyMap, InternalContextAdapter context, Node node) throws ParseErrorException, MethodInvocationException {
         String param = node.value(context).toString();
         int idx = param.indexOf("=");
         if (idx == -1) {
-            throw new ParseErrorException("(X) The " + this.getName()
-                    + " directive arguments must include"
-                    + " an assignment operator"
-                    + " [eg: #widget(\"ui.Panel\", \"title=Brick\","
-                    + " \"key=value\")] or"
-                    + " [eg: #widget(\"ui.Panel\", { \"title\" : \"Brick\","
-                    + " \"key\" : \"value\" } )]");
+            throw new ParseErrorException("(X) The " + this.getName() + " directive arguments must include" + " an assignment operator" + " [eg: #widget(\"ui.Panel\", \"title=Brick\"," + " \"key=value\")] or"
+                    + " [eg: #widget(\"ui.Panel\", { \"title\" : \"Brick\"," + " \"key\" : \"value\" } )]");
         }
         propertyMap.put(param.substring(0, idx), param.substring(idx + 1));
     }
