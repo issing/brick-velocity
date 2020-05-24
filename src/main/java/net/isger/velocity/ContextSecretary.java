@@ -72,10 +72,7 @@ public class ContextSecretary {
      */
     public static Object mirror(String name, boolean isCreate) {
         @SuppressWarnings("unchecked")
-        Class<?> type = Helpers.coalesce(Reflects.getClass(name),
-                Reflects.getClass("java.lang." + name),
-                Reflects.getClass("java.util." + name),
-                Reflects.getClass("net.isger.util." + name));
+        Class<?> type = Helpers.coalesce(Reflects.getClass(name), Reflects.getClass("java.lang." + name), Reflects.getClass("java.util." + name), Reflects.getClass("net.isger.util." + name));
         return isCreate ? Reflects.newInstance(type) : type;
     }
 }

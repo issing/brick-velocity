@@ -32,8 +32,7 @@ public class VelocityContext extends org.apache.velocity.VelocityContext {
         this(engine, null, innerContext);
     }
 
-    public VelocityContext(VelocityEngine engine, Map<String, Object> context,
-            Context innerContext) {
+    public VelocityContext(VelocityEngine engine, Map<String, Object> context, Context innerContext) {
         super(context, innerContext);
         this.engine = engine;
         if (innerContext instanceof VelocityContext) {
@@ -42,8 +41,7 @@ public class VelocityContext extends org.apache.velocity.VelocityContext {
             this.name = velocityContext.name;
         } else {
             this.secretary = new ContextSecretary();
-            this.name = Helpers.getAliasName(this.getClass(), "Context$",
-                    "Brick");
+            this.name = Helpers.getAliasName(this.getClass(), "Context$", "Brick");
         }
         this.put(getName(), getSecretary());
     }
@@ -83,8 +81,7 @@ public class VelocityContext extends org.apache.velocity.VelocityContext {
      * 获取资源
      */
     public Object internalGet(String key) {
-        return super.internalContainsKey(key) ? super.internalGet(key)
-                : ContextSecretary.mirror(key);
+        return super.internalContainsKey(key) ? super.internalGet(key) : ContextSecretary.mirror(key);
     }
 
 }
